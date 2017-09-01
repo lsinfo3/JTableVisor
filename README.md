@@ -14,9 +14,9 @@ Therefor, TableVisor registers with the SDN controller as a single switch with u
 
 # Installation
 
-JTableVisor uses [maven](https://maven.apache.org/) to build a executable `.jar` file.
+JTableVisor uses [maven](https://maven.apache.org/) to build an executable `.jar` file.
 
-Executing `mvn package` will create the binary in `./target/`
+Executing `mvn package` will create the binary in `./target/`.
 
 # Configuration
 
