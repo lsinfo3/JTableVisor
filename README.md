@@ -12,6 +12,15 @@ To overcome this challenge we propose TableVisor, a transparent proxy-layer for 
 It enables a flexible and scalable abstraction of multiple data plane devices into one emulated data plane switch, meeting the requirements of the control plane applications. 
 Therefor, TableVisor registers with the SDN controller as a single switch with use-case specific capabilities. It translates instructions and rules from control applications towards the appropriate data plane device where they are executed.
 
+# Installation
+
+JTableVisor uses [maven](https://maven.apache.org/) to build a executable `.jar` file.
+
+Executing `mvn package` will create the binary in `./target/`
+
+# Configuration
+
+TBD
 
 # Authors
 Alexej Grigorjew - <alexej.grigorjew@informatik.uni-wuerzburg.de>  
