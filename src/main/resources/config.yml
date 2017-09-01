@@ -1,0 +1,56 @@
+ourDatapathId: 01:02:03:04:05:06:07:08
+
+# Connection from TV to the Controller
+upperLayerEndpoints:
+  - name: OnosEndpoint
+    type: OPENFLOW            # upperlayer.UpperLayerType
+    ip: 127.0.0.1
+    port: 6653
+    reconnectInterval: 5000   # default: 10000 ms
+
+# Connection from TV to the Switches
+lowerLayerEndpoints:
+  - name: OpenFlowSwitches
+    ip: 127.0.0.1
+    port: 6666
+    type: OPENFLOW
+    switches:
+      - dataplaneId: 1
+        datapathId: 00:00:00:00:00:00:00:01
+        tableMap:
+            # [Our TableID towards Controller] : [TableID of Switch]
+            0: 0
+            5: 6
+            10: 11
+        portMap:
+            # [Our DataplaneID] : [Local Port of Device]
+            2: 3
+      - dataplaneId: 2
+        datapathId: 00:00:00:00:00:00:00:02
+        tableMap:
+            # [Our TableID towards Controller] : [TableID of Switch]
+            12: 0
+            17: 3
+            21: 56
+        portMap:
+            # [Our DataplaneID] : [Local Port of Device]
+            1: 1
+#  - name: P4Switches
+#    ip: 127.0.0.1
+#    port: 6665
+#    type: P4_NETRONOME
+#    switches:
+#      - dataplaneId: 100
+#        tableMap:
+#            # [Our TableID towards Controller] : [TableID of Switch]
+#            2: 0
+#        portMap:
+#            # [Our DataplaneID] : [Local Port of Device]
+#            1: 0
+
+applications:                  # config.ApplicationType
+  - ControllerLogApplication
+  - SwitchLogApplication
+  #- OneTransparentSwitchApplication
+  - MultiSwitchApplication
+  #- P4ControlApplication
