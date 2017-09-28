@@ -16,7 +16,7 @@ Therefor, TableVisor registers with the SDN controller as a single switch with u
 
 * Java 8
 * Maven _(build dependency)_
-* ONOS 1.11.1 _(only for examples)_
+* ONOS Controller 1.11.1 _(only for examples)_
 * Python 2 _(only for examples)_
 * Mininet _(only for examples)_
 
@@ -28,7 +28,15 @@ Executing `mvn package` will create the binary in `./target/`.
 
 # Configuration
 
-TBD
+An exemplary configuration file can be found in `./target/classes/config.yml` after building the package.
+
+For a detailed description of configuration options, see [Configuration](CONFIG.md)
+
+# Execution
+
+In order to run TableVisor, execute the generated `.jar` file and provide the path to your configuration file in the arguments.
+
+Example: `java -jar target/tablevisor-standalone-3.0.0-SNAPSHOT-jar-with-dependencies.jar target/classes/config.yml`
 
 # Authors
 Alexej Grigorjew - <alexej.grigorjew@informatik.uni-wuerzburg.de>  
