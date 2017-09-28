@@ -18,7 +18,7 @@ upperLayerEndpoints:
 # Connection from TV to the Switches
 lowerLayerEndpoints:
   - name: OpenFlowSwitches
-    type: OPENFLOW
+    type: OPENFLOW            # lowerlayer.LowerLayerType
     port: 6654
     switches:
       - dataplaneId: 1
