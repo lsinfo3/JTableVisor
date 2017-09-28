@@ -1,0 +1,413 @@
+{
+  "flows": [
+    {
+      "deviceId": "of:0000000000000001",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "1"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_POP",
+            "ethernetType": "0x0800"
+          },
+          {
+            "type": "OUTPUT",
+            "port": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000001",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "2"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_POP",
+            "ethernetType": "0x0800"
+          },
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000001",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "1"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000001",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "2"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+
+
+
+    {
+      "deviceId": "of:0000000000000002",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "1"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_POP",
+            "ethernetType": "0x0800"
+          },
+          {
+            "type": "OUTPUT",
+            "port": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000002",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "2"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_POP",
+            "ethernetType": "0x0800"
+          },
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000002",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "1"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:0000000000000002",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IN_PORT",
+            "port": "2"
+          },
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+
+
+
+    {
+      "deviceId": "of:1111111111111111",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "TABLE",
+            "tableId": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:1111111111111111",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          },
+          {
+            "type": "MPLS_LABEL",
+            "label": "1"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:1111111111111111",
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          },
+          {
+            "type": "MPLS_LABEL",
+            "label": "2"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+
+
+
+    {
+      "deviceId": "of:1111111111111111",
+      "tableId": 1,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          },
+          {
+            "type": "ETH_DST",
+            "mac": "00:00:10:00:00:11"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_PUSH",
+            "ethernetType": "0x8847"
+          },
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_LABEL",
+            "label": "1"
+          },
+          {
+            "type": "TABLE",
+            "tableId": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "deviceId": "of:1111111111111111",
+      "tableId": 1,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          },
+          {
+            "type": "ETH_DST",
+            "mac": "00:00:10:00:00:22"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_PUSH",
+            "ethernetType": "0x8847"
+          },
+          {
+            "type": "L2MODIFICATION",
+            "subtype": "MPLS_LABEL",
+            "label": "2"
+          },
+          {
+            "type": "TABLE",
+            "tableId": "2"
+          }
+        ],
+        "deferred": []
+      }
+    }
+  ]
+}
