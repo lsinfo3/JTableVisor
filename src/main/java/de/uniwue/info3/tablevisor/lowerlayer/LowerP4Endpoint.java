@@ -1,7 +1,7 @@
 package de.uniwue.info3.tablevisor.lowerlayer;
 
-import de.uniwue.info3.tablevisor.config.SwitchConfig;
 import de.uniwue.info3.tablevisor.config.LowerLayerEndpointConfig;
+import de.uniwue.info3.tablevisor.config.SwitchConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +18,7 @@ public class LowerP4Endpoint implements ILowerLayerEndpoint {
 		for (SwitchConfig endp : endpointConfig.switches) {
 			endpointManager.getDataplaneToDatapathId().put(endp.dataplaneId, endp.datapathId);
 			endpointManager.getDatapathToDataplaneId().put(endp.datapathId, endp.dataplaneId);
-			endpointManager.getSockets().put(endp.dataplaneId, new LowerP4Socket(this, endp.dataplaneId));
+			endpointManager.getSockets().put(endp.dataplaneId, new LowerP4MessageHandler(this, endp.dataplaneId));
 		}
 	}
 

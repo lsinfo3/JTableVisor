@@ -1,6 +1,8 @@
 package de.uniwue.info3.tablevisor.core;
 
-import de.uniwue.info3.tablevisor.application.*;
+import de.uniwue.info3.tablevisor.application.IApplication;
+import de.uniwue.info3.tablevisor.application.TVtoControllerLayer;
+import de.uniwue.info3.tablevisor.application.TVtoDataLayer;
 import de.uniwue.info3.tablevisor.config.*;
 import de.uniwue.info3.tablevisor.lowerlayer.ILowerLayerEndpoint;
 import de.uniwue.info3.tablevisor.lowerlayer.LowerLayerEndpointManager;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +33,8 @@ public class TableVisor {
 	private TVtoDataLayer tvToDataLayer;
 
 	private HashMap<Integer, IdPair> ourTableIdsToSwitchIds;
-	private HashMap<IdPair, Integer> switchIdsToOurTableIds;
+	private HashMap<IdPair, Integer[]> switchIdsToOurTableIds;
+	private int maxTableId = -1;
 
 	public static TableVisor getInstance() {
 		return INSTANCE;
@@ -155,10 +159,13 @@ public class TableVisor {
 		return getLowerEndpointManager().getDataplaneToDatapathId().get(dataplaneId);
 	}
 
+	public int getDataplaneIdFromDatapathId(String datapathId) {
+		return getLowerEndpointManager().getDatapathToDataplaneId().get(datapathId);
+	}
+
 	public IdPair ourTableIdToSwitchId(int tableId) {
 		IdPair ret = ourTableIdsToSwitchIds.get(tableId);
 		if (ret == null) {
-			// TODO: Maybe remove this case and let Java throw an NPE later, so we have a stack trace?
 			return new IdPair(-1, 0);
 		}
 		return ourTableIdsToSwitchIds.get(tableId);
@@ -168,24 +175,29 @@ public class TableVisor {
 		return ourTableIdToSwitchId(tableId.getValue());
 	}
 
-	public Integer switchIdToOurTableId(IdPair pair) {
+	public Integer[] switchIdToOurTableId(IdPair pair) {
 		return switchIdsToOurTableIds.get(pair);
 	}
 
-	public Integer switchIdToOurTableId(int dataplaneId, int tableId) {
+	public Integer[] switchIdToOurTableId(int dataplaneId, int tableId) {
 		return switchIdToOurTableId(new IdPair(dataplaneId, tableId));
 	}
 
-	public Integer switchIdToOurTableId(int dataplaneId, TableId tableId) {
+	public Integer[] switchIdToOurTableId(int dataplaneId, TableId tableId) {
 		return switchIdToOurTableId(new IdPair(dataplaneId, tableId));
 	}
 
 	private void populateIdMaps() {
 		ourTableIdsToSwitchIds = new HashMap<>();
 		switchIdsToOurTableIds = new HashMap<>();
+		int maxTable = maxTableId();
 
 		for (LowerLayerEndpointConfig lec : config.lowerLayerEndpoints) {
 			for (SwitchConfig swc : lec.switches) {
+				if (lec.type == LowerLayerType.P4_NETRONOME) {
+					swc.getP4Dict();
+				}
+
 				for (Map.Entry<Integer, Integer> e : swc.tableMap.entrySet()) {
 					IdPair pair = new IdPair(swc.dataplaneId, e.getValue());
 
@@ -194,12 +206,37 @@ public class TableVisor {
 					}
 					ourTableIdsToSwitchIds.put(e.getKey(), pair);
 
-					if (switchIdsToOurTableIds.containsKey(pair)) {
-						throw new IllegalStateException("Dataplane Table ID " + pair.tableId + " used twice");
+					Integer[] ourTableIds = switchIdsToOurTableIds.get(pair);
+					if (ourTableIds == null) {
+						ourTableIds = new Integer[]{e.getKey()};
 					}
-					switchIdsToOurTableIds.put(pair, e.getKey());
+					else {
+						if (pair.dataplaneId != getConfig().smallestDataplaneId()){
+							throw new IllegalStateException("Dataplane Table ID " + pair.tableId + " used twice in Switch: "+pair.dataplaneId);
+						}
+						if (pair.tableId != 0) {
+							throw new IllegalStateException("Only dataplane table ID 0 may be used twice, but was: " + pair.tableId);
+						}
+						if (e.getKey() != maxTable && e.getKey() != 0) {
+							throw new IllegalStateException("Duplicate control plane pointer towards the same table: only allowed for lowest (0) and highest ("+maxTable+"), but was used with: " + e.getKey());
+						}
+						ourTableIds = Arrays.copyOf(ourTableIds, ourTableIds.length + 1);
+						ourTableIds[ourTableIds.length-1] = e.getKey();
+
+					}
+					switchIdsToOurTableIds.put(pair, ourTableIds);
 				}
 			}
 		}
+	}
+
+	public int maxTableId() {
+		if (maxTableId == -1) {
+			maxTableId = config.getAllSwitches().stream()
+					.flatMap(s -> s.tableMap.keySet().stream())
+					.mapToInt(Integer::intValue)
+					.max().orElse(-1);
+		}
+		return maxTableId;
 	}
 }

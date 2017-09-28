@@ -39,7 +39,7 @@ public class LowerOpenFlowEndpoint implements ILowerLayerEndpoint {
 							@Override
 							protected void initChannel(Channel channel) throws Exception {
 								logger.info("{} - Connection from {}", endpointConfig.name, channel.remoteAddress());
-								LLGenericOpenFlowSocket socket = new LLGenericOpenFlowSocket(endpoint, channel);
+								LowerOpenFlowMessageHandler socket = new LowerOpenFlowMessageHandler(endpoint, channel);
 								channel.pipeline().addLast(
 										new TVMsgEncoder(),
 										new TVMsgDecoder(OFFactories.getFactory(OFVersion.OF_13).getReader()),
@@ -49,7 +49,7 @@ public class LowerOpenFlowEndpoint implements ILowerLayerEndpoint {
 							}
 						});
 
-				logger.info("{} - Listening on {}:{} for OpenFlow connections", endpointConfig.name, endpointConfig.ip, endpointConfig.port);
+				logger.info("{} - Listening for OpenFlow connections on port {}", endpointConfig.name, endpointConfig.port);
 				ChannelFuture f = bootstrap.bind(endpointConfig.port).sync();
 
 				f.channel().closeFuture().sync();

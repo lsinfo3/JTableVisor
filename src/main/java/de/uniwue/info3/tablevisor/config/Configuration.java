@@ -1,6 +1,5 @@
 package de.uniwue.info3.tablevisor.config;
 
-import de.uniwue.info3.tablevisor.lowerlayer.ILowerLayerEndpoint;
 import org.projectfloodlight.openflow.types.DatapathId;
 
 import java.util.*;
@@ -61,11 +60,44 @@ public class Configuration {
 
 	public Integer getDatapleIdOfOutputPort(int fromDataplaneId, int port) {
 		SwitchConfig sw = getSwitchConfigById(fromDataplaneId);
+		return sw.portMap.get(port);
+	}
+
+	public int getOutPortOfDataplaneId(int fromDataplaneId, int toDataplaneId) {
+		SwitchConfig sw = getSwitchConfigById(fromDataplaneId);
+		LinkedList<Integer> treffer = new LinkedList<>();
 		for (Map.Entry<Integer, Integer> e : sw.portMap.entrySet()) {
-			if (e.getValue().equals(port)) {
-				return e.getKey();
+			if (e.getValue().equals(toDataplaneId)) {
+				treffer.add(e.getKey());
 			}
 		}
-		return null;
+		return treffer.stream().mapToInt(Integer::intValue).min().orElse(-1);
+	}
+
+	public int getInPortOfDataplaneId(int fromDataplaneId, int toDataplaneId) {
+		SwitchConfig sw = getSwitchConfigById(fromDataplaneId);
+		LinkedList<Integer> treffer = new LinkedList<>();
+		for (Map.Entry<Integer, Integer> e : sw.portMap.entrySet()) {
+			if (e.getValue().equals(toDataplaneId)) {
+				treffer.add(e.getKey());
+			}
+		}
+		return treffer.stream().mapToInt(Integer::intValue).max().orElse(-1);
+	}
+
+	public int smallestDataplaneId() {
+		return getAllSwitches().stream().mapToInt(swc -> swc.dataplaneId).min().orElse(-1);
+	}
+
+	public int biggestDataplaneId() {
+		return getAllSwitches().stream().mapToInt(swc -> swc.dataplaneId).max().orElse(-1);
+	}
+
+	public int nextSmallerDataplaneId(int currentId) {
+		return getAllSwitches().stream().mapToInt(swc -> swc.dataplaneId).filter(i -> i < currentId).max().orElse(-1);
+	}
+
+	public int nextBiggerDataplaneId(int currentId) {
+		return getAllSwitches().stream().mapToInt(swc -> swc.dataplaneId).filter(i -> i > currentId).min().orElse(-1);
 	}
 }

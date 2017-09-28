@@ -1,7 +1,7 @@
 package de.uniwue.info3.tablevisor.application;
 
 import de.uniwue.info3.tablevisor.core.TableVisor;
-import de.uniwue.info3.tablevisor.lowerlayer.ILowerLayerSocket;
+import de.uniwue.info3.tablevisor.lowerlayer.ILowerLayerMessageHandler;
 import de.uniwue.info3.tablevisor.message.TVMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ public class TVtoDataLayer extends BaseApplication {
 	}
 
 	private void sendToDataPlane(TVMessage tvMessage) {
-		ILowerLayerSocket socket = TableVisor.getInstance().getLowerEndpointManager().getSockets().get(tvMessage.getDataplaneId());
+		ILowerLayerMessageHandler socket = TableVisor.getInstance().getLowerEndpointManager().getSockets().get(tvMessage.getDataplaneId());
 		if (socket != null) {
 			socket.send(tvMessage);
 		}

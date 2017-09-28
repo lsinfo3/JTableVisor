@@ -3,6 +3,7 @@ package de.uniwue.info3.tablevisor.application;
 import de.uniwue.info3.tablevisor.message.TVMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.projectfloodlight.openflow.protocol.OFFlowMod;
 import org.projectfloodlight.openflow.protocol.OFMessage;
 import org.projectfloodlight.openflow.protocol.OFStatsReply;
 import org.projectfloodlight.openflow.protocol.OFStatsRequest;
@@ -77,6 +78,9 @@ public class LogApplication {
 			}
 			else if (msg instanceof OFStatsReply) {
 				add += ((OFStatsReply) msg).getStatsType();
+			}
+			else if (msg instanceof OFFlowMod) {
+				add += ((OFFlowMod) msg).getCommand();
 			}
 		}
 		if (!add.isEmpty()) {

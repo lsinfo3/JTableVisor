@@ -24,7 +24,7 @@ public class BaseP4Application extends BaseApplication {
 
 	@Override
 	public void allToDataPlane(TVMessage tvMessage) {
-		if (TableVisor.getInstance().getLowerEndpointTypeById(tvMessage.getDataplaneId()) == LowerLayerType.P4_NETRONOME) {
+		if (TableVisor.getInstance().getLowerEndpointTypeById(tvMessage.getDataplaneId()) == LowerLayerType.P4_NETRONOME || tvMessage.getDataplaneId() ==  -1) {
 			super.allToDataPlane(tvMessage);
 		}
 		else {

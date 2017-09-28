@@ -22,7 +22,7 @@ public class UpperLayerEndpointManager {
 		for (UpperLayerEndpointConfig endpointConfig : endpoints) {
 			switch (endpointConfig.type) {
 				case OPENFLOW:
-					UpperLayerOpenFlowEndpoint endpoint = new UpperLayerOpenFlowEndpoint();
+					UpperOpenFlowEndpoint endpoint = new UpperOpenFlowEndpoint();
 					this.endpoints.add(endpoint);
 					endpoint.initialize(this, endpointConfig);
 					break;

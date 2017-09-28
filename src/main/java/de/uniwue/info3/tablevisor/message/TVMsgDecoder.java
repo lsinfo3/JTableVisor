@@ -32,6 +32,7 @@ public class TVMsgDecoder extends LengthFieldBasedFrameDecoder {
 			if (ofMsg == null) {
 				return null;
 			}
+
 			return new TVMessage(ofMsg);
 		}
 		catch (OFParseError e) {

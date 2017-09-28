@@ -6,8 +6,8 @@ import java.util.List;
 
 public class LowerLayerEndpointConfig {
 	public String name;
-	public String ip;
 	public int port;
 	public LowerLayerType type;
+	public String rtecliPath;
 	public List<SwitchConfig> switches;
 }

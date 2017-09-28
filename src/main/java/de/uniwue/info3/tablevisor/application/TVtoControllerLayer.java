@@ -1,8 +1,8 @@
 package de.uniwue.info3.tablevisor.application;
 
 import de.uniwue.info3.tablevisor.core.TableVisor;
-import de.uniwue.info3.tablevisor.upperlayer.IUpperLayerEndpoint;
 import de.uniwue.info3.tablevisor.message.TVMessage;
+import de.uniwue.info3.tablevisor.upperlayer.IUpperLayerEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -5,9 +5,6 @@ import de.uniwue.info3.tablevisor.message.TVMessage;
 
 import java.util.Set;
 
-/**
- * For debugging purposes only!
- */
 public class OneTransparentSwitchApplication extends BaseApplication {
 	public OneTransparentSwitchApplication(IApplication controlPlaneConnector) {
 		super(controlPlaneConnector);

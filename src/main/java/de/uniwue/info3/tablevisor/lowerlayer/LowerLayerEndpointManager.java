@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LowerLayerEndpointManager {
-	private Map<Integer, ILowerLayerSocket> sockets = new HashMap<>();
+	private Map<Integer, ILowerLayerMessageHandler> sockets = new HashMap<>();
 	private Map<Integer, String> dataplaneToDatapathId = new HashMap<>();
 	private Map<String, Integer> datapathToDataplaneId = new HashMap<>();
 	private List<ILowerLayerEndpoint> allEndpoints = new LinkedList<>();
@@ -30,7 +30,7 @@ public class LowerLayerEndpointManager {
 		}
 	}
 
-	public Map<Integer, ILowerLayerSocket> getSockets() {
+	public Map<Integer, ILowerLayerMessageHandler> getSockets() {
 		return sockets;
 	}
 
@@ -50,7 +50,7 @@ public class LowerLayerEndpointManager {
 		if (sockets.size() != TableVisor.getInstance().getConfig().getTotalNumberOfSwitches()) {
 			return false;
 		}
-		for (ILowerLayerSocket socket : sockets.values()) {
+		for (ILowerLayerMessageHandler socket : sockets.values()) {
 			if (!socket.isInitialized()) {
 				return false;
 			}

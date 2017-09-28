@@ -1,6 +1,9 @@
 package de.uniwue.info3.tablevisor.config;
 
-import de.uniwue.info3.tablevisor.application.*;
+import de.uniwue.info3.tablevisor.application.LogApplication;
+import de.uniwue.info3.tablevisor.application.MultiSwitchApplication;
+import de.uniwue.info3.tablevisor.application.OneTransparentSwitchApplication;
+import de.uniwue.info3.tablevisor.application.P4ControlApplication;
 
 public enum ApplicationType {
 	// Note: the order of this Enum decides the order in which the Apps are called.

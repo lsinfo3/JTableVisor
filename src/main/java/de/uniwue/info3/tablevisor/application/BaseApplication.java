@@ -1,10 +1,14 @@
 package de.uniwue.info3.tablevisor.application;
 
 import de.uniwue.info3.tablevisor.message.TVMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BaseApplication implements IApplication {
 	private IApplication controlPlaneConnector;
 	private IApplication dataPlaneConnector;
+
+	private static Logger logger = LogManager.getLogger();
 
 	/**
 	 * This constructor automatically sets the dataPlaneConnector
@@ -22,8 +26,8 @@ public class BaseApplication implements IApplication {
 
 	@Override
 	public void allToControlPlane(TVMessage tvMessage) {
-		if (tvMessage.isOpenFlow()) {
-			switch (tvMessage.getOFMessage().getType()) {
+		if (tvMessage.getThisMsgType() != null) {
+			switch (tvMessage.getThisMsgType()) {
 				case PACKET_IN:
 					packetInToControlPlane(tvMessage);
 					break;
@@ -41,6 +45,7 @@ public class BaseApplication implements IApplication {
 					break;
 				case SET_CONFIG:
 					setConfigToControlPlane(tvMessage);
+					break;
 				case METER_MOD:
 					meterModToControlPlane(tvMessage);
 					break;
@@ -70,15 +75,18 @@ public class BaseApplication implements IApplication {
 		else if (tvMessage.isError()) {
 			errorToControlPlane(tvMessage);
 		}
-		else {
+		else if (tvMessage.isP4()) {
 			p4ToControlPlane(tvMessage);
+		}
+		else {
+			logger.warn("Discarded tvMessage due to unknown type: {}", tvMessage.getTypeAsString());
 		}
 	}
 
 	@Override
 	public void allToDataPlane(TVMessage tvMessage) {
-		if (tvMessage.isOpenFlow()) {
-			switch (tvMessage.getOFMessage().getType()) {
+		if (tvMessage.getThisMsgType() != null) {
+			switch (tvMessage.getThisMsgType()) {
 				case PACKET_OUT:
 					packetOutToDataPlane(tvMessage);
 					break;
@@ -93,6 +101,7 @@ public class BaseApplication implements IApplication {
 					break;
 				case SET_CONFIG:
 					setConfigToDataPlane(tvMessage);
+					break;
 				case METER_MOD:
 					meterModToDataPlane(tvMessage);
 					break;
@@ -122,8 +131,11 @@ public class BaseApplication implements IApplication {
 		else if (tvMessage.isError()) {
 			errorToDataPlane(tvMessage);
 		}
-		else {
+		else if (tvMessage.isP4()) {
 			p4ToDataPlane(tvMessage);
+		}
+		else {
+			logger.warn("Discarded tvMessage due to unknown type: {}", tvMessage.getTypeAsString());
 		}
 	}
 
