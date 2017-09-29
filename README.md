@@ -40,6 +40,7 @@ In order to run TableVisor, execute the generated `.jar` file and provide the pa
 Example: `java -jar target/tablevisor-standalone-3.0.0-SNAPSHOT-jar-with-dependencies.jar target/classes/config.yml`
 
 # Authors
+
 Alexej Grigorjew - <alexej.grigorjew@informatik.uni-wuerzburg.de>  
 Stefan Geissler - <stefan.geissler@informatik.uni-wuerzburg.de>  
 Stefan Herrnleben - <stefan.herrnleben@informatik.uni-wuerzburg.de>  

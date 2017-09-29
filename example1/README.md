@@ -1,3 +1,3 @@
-# Example Use Case 1
+# Example 1
 
 Todo...
