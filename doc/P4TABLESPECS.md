@@ -28,7 +28,7 @@ table routing_tbl {
         standard_metadata.ingress_port: exact;
         eth.etype : exact;
         // @TV field ipv4_dst
-        ipv4.dstAddr : exact;      
+        ipv4.dstAddr : exact;
     }
     actions {
         set_dst_mac;

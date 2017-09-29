@@ -1,6 +1,6 @@
 # Configuration
 
-The configuration file of TableVisor is written in [YAML](http://yaml.org/). A full example is provided in [src/main/resources/config.yml](src/main/resources/config.yml).
+The configuration file of TableVisor is written in [YAML](http://yaml.org/). A full example is provided in [../src/main/resources/config.yml](src/main/resources/config.yml).
 It is comprised of four main components:
 * ourDatapathId _(The datapath ID that the controller sees for our emulated switch.)_
 * applications

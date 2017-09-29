@@ -32,7 +32,7 @@ Executing `mvn package` will create the binary in `./target/`.
 
 An exemplary configuration file can be found in `./target/classes/config.yml` after building the package.
 
-For a detailed description of configuration options, see [Configuration](CONFIG.md).
+For a detailed description of configuration options, see [Configuration](doc/CONFIG.md).
 
 # Execution
 
