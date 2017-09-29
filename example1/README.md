@@ -210,7 +210,7 @@ Again, while located in the main folder, execute the following command to instal
 curl -u onos:rocks -H 'Content-type: application/json' -X POST -d '@example1/onosRules.json' 'http://127.0.0.1:8181/onos/v1/flows'
 ```
 
-Note that you may have to adjust the IP address again.
+Note that you may have to adjust the IP address towards ONOS again.
 
 Now, the pings should be properly forwarded in the network and can be observed in the Mininet console.
 You can also observe the matching statistics in the ONOS web interface (in the Devices section, select `of:1111111111111111` and click on the flow view icon in the top right).
