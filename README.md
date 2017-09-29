@@ -19,6 +19,7 @@ Therefor, TableVisor registers with the SDN controller as a single switch with u
 * ONOS Controller 1.11.1 _(only for examples)_
 * Python 2 _(only for examples)_
 * Mininet _(only for examples)_
+* A Netronome Agilio CX P4 SmartNIC _(only for example 2)_
 
 # Installation
 
