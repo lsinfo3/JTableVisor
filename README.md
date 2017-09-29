@@ -40,6 +40,10 @@ In order to run TableVisor, execute the generated `.jar` file and provide the pa
 
 Example: `java -jar target/tablevisor-standalone-3.0.0-SNAPSHOT-jar-with-dependencies.jar target/classes/config.yml`
 
+# Examples
+
+- [Example 1](./example1/): MPLS_PUSH in a Staged Pipeline with the MultiSwitchApplication
+
 # Authors
 
 Alexej Grigorjew - <alexej.grigorjew@informatik.uni-wuerzburg.de>  
