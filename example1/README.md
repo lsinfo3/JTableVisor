@@ -28,8 +28,8 @@ The following flow rules are pushed into the aggregated TableVisor switch:
 | `0`             | `s1.table0`    | `ETH_TYPE=ipv4`                    | `GOTO_TABLE 1`                               | 10       |
 | `0`             | `s1.table0`    | `ETH_TYPE=mpls` and `MPLS_LABEL=1` | `OUTPUT PORT=1`                              | 10       |
 | `0`             | `s1.table0`    | `ETH_TYPE=mpls` and `MPLS_LABEL=2` | `OUTPUT PORT=2`                              | 10       |
-| `1`             | `s2.table0`    | `ETH_TYPE=ipv4` and `ETH_DST=h1`   | `MPLS_PUSH`, `MPLS_LABEL=1`, `GOTO_TABLE 2`  | 10       |
-| `1`             | `s2.table0`    | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `MPLS_LABEL=2`, `GOTO_TABLE 2`  | 10       |
+| `1`             | `s2.table0`    | `ETH_TYPE=ipv4` and `ETH_DST=h1`   | `MPLS_PUSH`, `LABEL=1`, `GOTO_TABLE 2`       | 10       |
+| `1`             | `s2.table0`    | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `LABEL=2`, `GOTO_TABLE 2`       | 10       |
 | `2`             | `s1.table0`    | `ETH_TYPE=ipv4`                    | `OUTPOT PORT=CONTROLLER`                     | 15       |
 
 Note that the priority of the rule in table `2` is higher than the priorities in table `0`, as they share the same destination.
@@ -45,8 +45,8 @@ TableVisor transforms the rules into the following flows, as it passes the FlowM
 
 | Switch          | Table ID       | Match                              | Actions                                      | Priority |
 | --------------- | -------------  | ---------------------------------- | -------------------------------------------- | -------- |
-| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `MPLS_LABEL=2`, `OUTPUT PORT=2` | 10       |
-| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h1`   | `MPLS_PUSH`, `MPLS_LABEL=1`, `OUTPUT PORT=2` | 10       |
+| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `LABEL=2`, `OUTPUT PORT=2`      | 10       |
+| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h1`   | `MPLS_PUSH`, `LABEL=1`, `OUTPUT PORT=2`      | 10       |
 
 Note that every `GOTO_TABLE` instruction that leads to another device is transformed into the corresponding `OUTPUT` instruction, while flows in the last table also receive an additional `IN_PORT=4` match.
 This allows IPv4 communication between `h1` and `h2`, which will be tested with simple pings further below.
