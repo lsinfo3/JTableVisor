@@ -28,8 +28,8 @@ def myNetwork():
     # Add two controllers:
     # - c_onos is connected directly to ONOS (6653)
     # - c_tv is connected to our TableVisor instance (6654)
-    c_onos = net.addController("c1", controller=RemoteController, ip="10.0.2.2", port=6653)
-    c_tv = net.addController("c2", controller=RemoteController, ip="10.0.2.2", port=6654)
+    c_onos = net.addController("c1", controller=RemoteController, ip="127.0.0.1", port=6653)
+    c_tv = net.addController("c2", controller=RemoteController, ip="127.0.0.1", port=6654)
 
     net.build()
 

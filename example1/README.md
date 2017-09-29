@@ -20,7 +20,7 @@ The additional green switches were added to remove the MPLS header from incoming
 They are not subject of the example itself.
 
 For both switches `s1` and `s2`, we are only using their respective table `0`.
-`s1.table0` is mapped to global `table0` and `table2`, while `s2.table0` is mapped to `table1`.
+`s1.table0` is mapped to global tables `0` and `2`, while `s2.table0` is mapped to table `1`.
 The following flow rules are pushed into the aggregated TableVisor switch:
 
 | Global Table    | Local Table    | Match                              | Actions                                      | Priority |
@@ -42,14 +42,36 @@ TableVisor transforms the rules into the following flows, as it passes the FlowM
 | `s1`            | `0`            | `ETH_TYPE=mpls` and `MPLS_LABEL=2` | `OUTPUT PORT=2`                              | 10       |
 | `s1`            | `0`            | `ETH_TYPE=ipv4` and `IN_PORT=4`    | `OUTPOT PORT=CONTROLLER`                     | 15       |
 
-
 | Switch          | Table ID       | Match                              | Actions                                      | Priority |
 | --------------- | -------------  | ---------------------------------- | -------------------------------------------- | -------- |
-| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `LABEL=2`, `OUTPUT PORT=2`      | 10       |
 | `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h1`   | `MPLS_PUSH`, `LABEL=1`, `OUTPUT PORT=2`      | 10       |
+| `s2`            | `0`            | `ETH_TYPE=ipv4` and `ETH_DST=h2`   | `MPLS_PUSH`, `LABEL=2`, `OUTPUT PORT=2`      | 10       |
 
 Note that every `GOTO_TABLE` instruction that leads to another device is transformed into the corresponding `OUTPUT` instruction, while flows in the last table also receive an additional `IN_PORT=4` match.
 This allows IPv4 communication between `h1` and `h2`, which will be tested with simple pings further below.
 
 In order to work in the mininet environment, ARP requests must also be processed and answered.
-In this setup, they are handled by a dedicated set of (default) ONOS apps, which install some further default rules into table `0`, forwarding various types of non-IPv4 traffic to the controller and handling ARP replies on the controller side. 
+In this setup, they are handled by a dedicated set of (default) ONOS apps, which install some further default rules into table `0`, forwarding various types of non-IPv4 traffic to the controller and handling ARP replies on the controller side.
+
+## Execution
+
+In order to execute the example, Mininet, the ONOS controller, and Curl are required next to TableVisor.
+However, they do not have to be installed on the same machine.
+Note that you need an ONOS version of 1.11.1 or higher, as earlier versions had problems with specifying the correct `ETH_TYPE` with `MPLS_POP` actions through the REST API.
+
+### Adjustments in the Configuration
+
+In order to connect all parts, the correct IP adresses must be entered into the configuration files.
+
+In the file [topology.py](topology.py), in the following section:
+
+```python
+    # Add two controllers:
+    # - c_onos is connected directly to ONOS (6653)
+    # - c_tv is connected to our TableVisor instance (6654)
+    c_onos = net.addController("c1", controller=RemoteController, ip="10.0.2.2", port=6653)
+    c_tv = net.addController("c2", controller=RemoteController, ip="10.0.2.2", port=6654)
+```
+
+... check the IPs of both controllers (`10.0.2.2` in this example, as Mininet was run in a virtual machine).
+`c_onos` must be configured 
