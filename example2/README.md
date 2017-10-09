@@ -127,7 +127,7 @@ The following flow rules are going to be installed in this simple scenario:
 | routing_tbl (`2`) | `ETH_TYPE=IPv4` and `IPv4_DST=10.100.100.10`    | `ETH_DST=00:00:00:00:00:02` and `GOTO_TABLE 3` |
 | switch_tbl (`3`)  | `ETH_DST=00:00:00:00:00:02`                     | `OUTPUT PORT=1`                                |
 
-Again, while located in the main folder, execute the following command to install the flow rules from the Setup section:
+Again, while located in the main folder, execute the following command to install the flow rules:
 
 ```Shell
 curl -u onos:rocks -H 'Content-type: application/json' -X POST -d '@example2/onosRules.json' 'http://127.0.0.1:8181/onos/v1/flows'
