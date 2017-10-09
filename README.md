@@ -43,6 +43,7 @@ Example: `java -jar target/tablevisor-standalone-3.0.0-SNAPSHOT-jar-with-depende
 # Examples
 
 - [Example 1](./example1/): MPLS_PUSH in a Staged Pipeline with the MultiSwitchApplication
+- [Example 2](./example2/): Label Edge Router in P4
 
 # Authors
 

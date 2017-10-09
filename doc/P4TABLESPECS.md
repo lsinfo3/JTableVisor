@@ -55,4 +55,4 @@ Note that these two OpenFlow actions are special, as they also contain the modif
 In addition, the OpenFlow field `ETH_DST` is mapped to the P4 parameter `mac`.
 This also happens in a global scope, therefore, all parameter names should be unique in the P4 program.
 
-A full example mapping can be found in the 2nd example use case (**TODO**).
+A full example mapping can be found in the [2nd example use case](../example2/).
