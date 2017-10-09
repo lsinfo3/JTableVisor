@@ -1,0 +1,113 @@
+{
+  "flows": [
+    {
+      "tableId": 0,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "deviceId": "of:0102030405060708",
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x8847"
+          },
+          {
+            "type": "ETH_DST",
+            "mac": "00:00:00:00:00:01"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "TABLE",
+            "tableId": "1"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "tableId": 1,
+      "priority": "10",
+      "timeout": 1500,
+      "isPermanent": true,
+      "deviceId": "of:0102030405060708",
+      "selector": {
+        "criteria": []
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type":"L2MODIFICATION",
+            "subtype":"MPLS_POP",
+            "ethernetType": "0x0800"
+          },
+          {
+            "type": "TABLE",
+            "tableId": "2"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "tableId": 2,
+      "priority": "15",
+      "timeout": 1500,
+      "isPermanent": true,
+      "deviceId": "of:0102030405060708",
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_TYPE",
+            "ethType": "0x0800"
+          },
+          {
+            "type": "IPV4_DST",
+            "ip": "10.100.100.10/32"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type":"L2MODIFICATION",
+            "subtype":"ETH_DST",
+            "mac":"00:00:00:00:00:02"
+          },
+          {
+            "type": "TABLE",
+            "tableId": "3"
+          }
+        ],
+        "deferred": []
+      }
+    },
+    {
+      "tableId": 3,
+      "priority": "15",
+      "timeout": 1500,
+      "isPermanent": true,
+      "deviceId": "of:0102030405060708",
+      "selector": {
+        "criteria": [
+          {
+            "type": "ETH_DST",
+            "mac": "00:00:00:00:00:02"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "OUTPUT",
+            "port": "1"
+          }
+        ],
+        "deferred": []
+      }
+    }
+  ]
+}

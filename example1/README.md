@@ -16,7 +16,7 @@ The actual setup of this example is presented in the following picture.
 ![Overview2](pics/overview2.png)
 
 Both parts of the remaining network are represented by a single host.
-The additional green switches were added to remove the MPLS header from incoming packets, so the hosts can actually read incoming packets.
+The additional green switches were added to remove the MPLS header from incoming packets, so the hosts can actually read them.
 They are not subject of the example itself.
 
 For both switches `s1` and `s2`, we are only using their respective table `0`.
@@ -50,7 +50,7 @@ TableVisor transforms the rules into the following flows, as it passes the FlowM
 Note that every `GOTO_TABLE` instruction that leads to another device is transformed into the corresponding `OUTPUT` instruction, while flows in the last table also receive an additional `IN_PORT=4` match.
 This allows IPv4 communication between `h1` and `h2`, which will be tested with simple pings further below.
 
-In order to work in the mininet environment, ARP requests must also be processed and answered.
+In order to work in the Mininet environment, ARP requests must also be processed and answered.
 In this setup, they are handled by a dedicated set of (default) ONOS apps, which install some further default rules into table `0`, forwarding various types of non-IPv4 traffic to the controller and handling ARP replies on the controller side.
 
 ## Execution

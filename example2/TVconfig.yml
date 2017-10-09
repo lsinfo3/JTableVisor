@@ -1,0 +1,38 @@
+ourDatapathId: 01:02:03:04:05:06:07:08
+
+# Connection from TV to the Controller
+upperLayerEndpoints:
+  - name: MyConnectionToOnos
+    type: OPENFLOW            # upperlayer.UpperLayerType
+    ip: 127.0.0.1
+    port: 6653
+    reconnectInterval: 5000   # default: 10000 ms
+
+# Connection from TV to the Switches
+lowerLayerEndpoints:
+  - name: P4Switches
+    type: P4_NETRONOME
+    rtecliPath: /opt/nfp-sdk-6.0.1/p4/bin/rtecli
+    switches:
+      - dataplaneId: 100
+        rteIp: 172.16.35.11   # You probably need to change this!
+        rtePort: 20206
+        numberOfPorts: 2
+        tableSpecs:
+          # List all files with relevant P4 table specs here
+          - mplsProgram.p4
+        tableMap:
+            # [Our TableID towards Controller] : [TableID of Switch]
+            0: 0 # ACL
+            1: 1 # MPLS
+            2: 2 # Routing
+            3: 3 # Switching
+        portMap:
+            #  [Local Port of Device] : [Our DataplaneID]
+            0: 1
+
+applications:                  # config.ApplicationType
+  - ControllerLogApplication
+  - SwitchLogApplication
+  - P4ControlApplication
+  - OneTransparentSwitchApplication
