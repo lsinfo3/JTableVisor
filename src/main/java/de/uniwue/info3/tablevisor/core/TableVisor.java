@@ -35,6 +35,7 @@ public class TableVisor {
 	private HashMap<Integer, IdPair> ourTableIdsToSwitchIds;
 	private HashMap<IdPair, Integer[]> switchIdsToOurTableIds;
 	private int maxTableId = -1;
+	private Path configFile;
 
 	public static TableVisor getInstance() {
 		return INSTANCE;
@@ -48,12 +49,16 @@ public class TableVisor {
 		if (INSTANCE != null) {
 			throw new IllegalStateException("Duplicate initialization.");
 		}
+		INSTANCE = this;
 
 		logger.info("Using configuration file {}", configFile.toAbsolutePath().toString());
+		this.configFile = configFile;
 		config = ConfigurationParser.parseYamlFile(configFile);
 		populateIdMaps();
+	}
 
-		INSTANCE = this;
+	public Path getConfigFile() {
+		return configFile;
 	}
 
 	public void start() {

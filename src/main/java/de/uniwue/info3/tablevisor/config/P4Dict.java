@@ -1,5 +1,6 @@
 package de.uniwue.info3.tablevisor.config;
 
+import de.uniwue.info3.tablevisor.core.TableVisor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,9 @@ public class P4Dict {
 
 	public void parseP4File(String path) {
 		try {
-			LineNumberReader lnr = new LineNumberReader(new FileReader(path));
+			LineNumberReader lnr = new LineNumberReader(new FileReader(
+					TableVisor.getInstance().getConfigFile().getParent().resolve(path).toAbsolutePath().toString()
+			));
 
 			String line;
 			int lineNr = 0;
