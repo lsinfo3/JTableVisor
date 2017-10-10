@@ -143,7 +143,7 @@ However, note that P4 does not implement default packet and byte counters, hence
 You may check the rules on the P4 card, e.g., via the RTECLI interface:
 
 ```Shell
-rtecli --rte-port 20206 --rte-host p4os2 tables --table-name routing_tbl list-rules
+rtecli --rte-port 20206 --rte-host 172.16.35.11 tables --table-name routing_tbl list-rules
 ```
 
 The result should look as follows:
