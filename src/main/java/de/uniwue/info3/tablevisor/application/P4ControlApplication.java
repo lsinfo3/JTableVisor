@@ -319,7 +319,8 @@ public class P4ControlApplication extends BaseP4Application {
 						break;
 
 					case "OUTPUT":
-						String portStr = dataMap.get("port");
+						String portStr = dataMap.get("out_port");
+						if (portStr.startsWith("p")) portStr = portStr.substring(1);
 						if (portStr != null && !portStr.matches("\\d+")) {
 							logger.warn("Cannot parse port number of instr. {}, param. PORT={}", inst, portStr);
 							break;
@@ -328,10 +329,10 @@ public class P4ControlApplication extends BaseP4Application {
 						retActions.add(fac.actions().output(OFPort.of(portNr), 0xffff));
 						break;
 
-					case "POP_MPLS":
-						String etypeStr = dataMap.get("ethertype");
+					case "MPLS_POP":
+						String etypeStr = dataMap.get("pop_ethertype");
 						if (etypeStr == null) {
-							logger.warn("Cannot parse EthType of instr. {}, param. ETHERTYPE={}", inst, etypeStr);
+							logger.warn("Cannot parse EthType of instr. {}, param. POP_ETHERTYPE={}", inst, etypeStr);
 							break;
 						}
 						if (etypeStr.startsWith("0x")) {
@@ -342,7 +343,36 @@ public class P4ControlApplication extends BaseP4Application {
 							retActions.add(fac.actions().popMpls(EthType.of(etype)));
 						}
 						catch (NumberFormatException e) {
-							logger.warn("Cannot parse EthType of instr. {}, param. ETHERTYPE={}", inst, etypeStr);
+							logger.warn("Cannot parse EthType of instr. {}, param. POP_ETHERTYPE={}", inst, etypeStr);
+						}
+						break;
+
+					case "MPLS_PUSH":
+						String ethertypeStr = dataMap.get("push_ethertype");
+						if (ethertypeStr == null) {
+							logger.warn("Cannot parse EthType of instr. {}, param. PUSH_ETHERTYPE={}", inst, ethertypeStr);
+							break;
+						}
+						if (ethertypeStr.startsWith("0x")) {
+							ethertypeStr = ethertypeStr.substring(2);
+						}
+						try {
+							int etype = Integer.parseInt(ethertypeStr, 16);
+							retActions.add(fac.actions().pushMpls(EthType.of(etype)));
+						}
+						catch (NumberFormatException e) {
+							logger.warn("Cannot parse EthType of instr. {}, param. PUSH_ETHERTYPE={}", inst, ethertypeStr);
+						}
+						break;
+
+					case "MPLS_LABEL":
+						String labelStr = dataMap.get("label");
+						try {
+							long label = Long.parseLong(labelStr);
+							retActions.add(fac.actions().setMplsLabel(label));
+						}
+						catch (NumberFormatException e) {
+							logger.warn("Cannot parse Label of instr. {}, param. MPLS_LABEL={}", inst, labelStr);
 						}
 						break;
 
@@ -455,7 +485,7 @@ public class P4ControlApplication extends BaseP4Application {
 									return;
 								}
 
-								String portName = swc.getP4Dict().ofParamToP4Param("PORT");
+								String portName = swc.getP4Dict().ofParamToP4Param("OUT_PORT");
 								String portVal = "" + outAction.getPort().getShortPortNumber();
 								actionData.add(f("'%s': { 'value': 'p%s' }", portName, portVal));
 								commands.add(ofAction.getType().toString());
@@ -463,10 +493,10 @@ public class P4ControlApplication extends BaseP4Application {
 
 							case POP_MPLS:
 								OFActionPopMpls mplsPopAction = (OFActionPopMpls) ofAction;
-								String ethertypeName = swc.getP4Dict().ofParamToP4Param("ETHERTYPE");
+								String ethertypeName = swc.getP4Dict().ofParamToP4Param("POP_ETHERTYPE");
 								String ethertypeVal = mplsPopAction.getEthertype().toString();
 								actionData.add(f("'%s': { 'value': '%s' }", ethertypeName, ethertypeVal));
-								commands.add(ofAction.getType().toString());
+								commands.add("MPLS_POP");
 								break;
 
 							case SET_FIELD:
@@ -554,6 +584,9 @@ public class P4ControlApplication extends BaseP4Application {
 		cliParams.add("--match " + matchString);
 		cliParams.add("--action " + actionString);
 		cliParams.add("--priority " + priority);
+
+		if (matchList.isEmpty())
+			cliParams.add("--default");
 
 		TVMessage translated = new TVMessage(cliParams, tvMessage.getDataplaneId(), null);
 		super.allToDataPlane(translated);

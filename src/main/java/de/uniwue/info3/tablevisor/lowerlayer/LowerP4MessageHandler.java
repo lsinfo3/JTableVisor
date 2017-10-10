@@ -52,8 +52,9 @@ public class LowerP4MessageHandler implements ILowerLayerMessageHandler {
 			if (p.startsWith("--")) {
 				// Split argument into 2 to comply with what RTECLI expects
 				String[] parts = p.split(" ", 2);
-				commandline.addArgument(parts[0], false);
-				commandline.addArgument(parts[1], false);
+				for (String s : parts) {
+					commandline.addArgument(s, false);
+				}
 			}
 			else {
 				commandline.addArgument(p, false);
