@@ -92,7 +92,7 @@ Log in with the user `onos` and password `rocks` and open the Applications setti
 Here, only enable the **OpenFlow Base Provider** _(org.onosproject.openflow-base)_ application.
 Therefor, select it and click on the Play-Button in the top right of the screen.
 
-(Make sure that the applications from _example1_ are disabled at this point! In order to reset the internal status, type `wipe-out please` in the ONOS terminal.)
+(Make sure that the applications from _example1_ are disabled at this point! In order to reset the flow rules afterwards, type `wipe-out please` in the ONOS terminal.)
 
 #### TableVisor
 
