@@ -1,8 +1,16 @@
 # Example 2: Label Edge Router using P4 Hardware
 
-## Summary: What do we want to do
+Example 2 is designed to show the capability of TableVisor to translate between different configuration protocols.
+In this example use-case a transparent translation between OpenFlow 1.3 and the proprietary configuration protocol used by the Netronome Agilio CX P4 NICs is performed.
+The following picture presents the example setup in which we realize an OpenFlow capable MPLS label edge router using a single P4 hardware card.
 
-ACL, remove MPLS header, set eth_dst, forward packet
+[Overview](overview.png)
+
+The MPLS label edge router is realized using 4 tables.
+The `acl_tbl` performs common access control.
+The `mpls_tbl` performs an `MPLS_POP` operation removing the MPLS header from the packet.
+Following, the `routing_tbl` sets the `ETH_DST` field based on the destination IP address.
+Finally, the `switch_tbl` performs an `OUTPUT` action to forward the packet to the next hop based on the destination mac address.
 
 ## P4 Program (including annotations)
 
