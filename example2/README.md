@@ -4,7 +4,7 @@ Example 2 is designed to show the capability of TableVisor to translate between 
 In this example use-case a transparent translation between OpenFlow 1.3 and the proprietary configuration protocol used by the Netronome Agilio CX P4 NICs is performed.
 The following picture presents the example setup in which we realize an OpenFlow capable MPLS label edge router using a single P4 hardware card.
 
-[Overview](overview.png)
+![Overview](pics/overview.png)
 
 The MPLS label edge router is realized using 4 tables.
 The `acl_tbl` performs common access control.
