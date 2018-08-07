@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableVisor {
-	public static final String VERSION = "3.0.0";
+	public static final String VERSION = "3.0.1";
 	private static TableVisor INSTANCE;
 	private static final Logger logger = LogManager.getLogger();
 
@@ -62,7 +62,7 @@ public class TableVisor {
 	}
 
 	public void start() {
-		logger.info("Starting TableVisor");
+		logger.info("Starting TableVisor v" + VERSION);
 
 		if (config == null) {
 			logger.error("No configuration file set");

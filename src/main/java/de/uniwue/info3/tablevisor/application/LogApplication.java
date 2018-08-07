@@ -3,10 +3,7 @@ package de.uniwue.info3.tablevisor.application;
 import de.uniwue.info3.tablevisor.message.TVMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.projectfloodlight.openflow.protocol.OFFlowMod;
-import org.projectfloodlight.openflow.protocol.OFMessage;
-import org.projectfloodlight.openflow.protocol.OFStatsReply;
-import org.projectfloodlight.openflow.protocol.OFStatsRequest;
+import org.projectfloodlight.openflow.protocol.*;
 
 public class LogApplication {
 	private static final Logger logger = LogManager.getLogger();

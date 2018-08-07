@@ -24,6 +24,8 @@ public class UpperOpenFlowEndpoint implements IUpperLayerEndpoint {
 	private UpperLayerEndpointManager manager = null;
 	private Channel ch = null;
 
+	private long lastReconnect = -1;
+
 	public void initialize(UpperLayerEndpointManager manager, UpperLayerEndpointConfig cfg) {
 		if (this.cfg != null) {
 			logger.warn("{} - Prevented duplicate initialization of UpperOpenFlowEndpoint", cfg.name);
@@ -73,12 +75,19 @@ public class UpperOpenFlowEndpoint implements IUpperLayerEndpoint {
 					return;
 				}
 
-				logger.info("{} - Connection to {}:{} failed; reconnecting in {} seconds", cfg.name, cfg.ip, cfg.port, (double) cfg.reconnectInterval / 1000);
-				try {
-					Thread.sleep(cfg.reconnectInterval);
+				if (cfg.reconnectInterval > 0 && System.currentTimeMillis() - lastReconnect < cfg.reconnectInterval) {
+					logger.info("{} - Connection to {}:{} failed; reconnecting in {} seconds", cfg.name, cfg.ip, cfg.port, (double) cfg.reconnectInterval / 1000);
+					try {
+						Thread.sleep(cfg.reconnectInterval);
+					}
+					catch (InterruptedException e) {
+						// Do nothing (why even wake up this thread?)
+					}
+					lastReconnect = System.currentTimeMillis();
 				}
-				catch (InterruptedException e) {
-					// Do nothing (why even wake up this thread?)
+				else {
+					logger.info("{} - Connection to {}:{} failed; reconnecting", cfg.name, cfg.ip, cfg.port, (double) cfg.reconnectInterval / 1000);
+					lastReconnect = System.currentTimeMillis();
 				}
 			}
 		}).start();

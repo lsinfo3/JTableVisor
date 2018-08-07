@@ -308,6 +308,49 @@ public class MultiSwitchApplication extends BaseApplication {
                 }
                 break;
 
+//            case FLOW:
+//                if (flowStatsCounter.add(tvMessage.getDataplaneId())) {
+//                    ArrayList<OFFlowStatsEntry> lastTableEntries = new ArrayList<>();
+//                    ArrayList<OFFlowStatsEntry> firstTableEntries = new ArrayList<>();
+//
+//                    if (tvMessage.getDataplaneId() == TV.getConfig().smallestDataplaneId()) {
+//                        for (OFFlowStatsEntry entry : ((OFFlowStatsReply) switchReply).getEntries()) {
+//                            if (matchContainsInPortFromHigherDevice(entry, tvMessage.getDataplaneId())) {
+//                                entry = entry.createBuilder().setMatch(
+//                                        removeInPortFromMatch(entry.getMatch())
+//                                ).build();
+//                                lastTableEntries.add(entry);
+//                            }
+//                            else {
+//                                firstTableEntries.add(entry);
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        firstTableEntries.addAll(((OFFlowStatsReply) switchReply).getEntries());
+//                    }
+//
+//                    flowStats.addAll(
+//                            adaptFlowStatsEntries(lastTableEntries, tvMessage.getDataplaneId(), true)
+//                    );
+//                    flowStats.addAll(
+//                            adaptFlowStatsEntries(firstTableEntries, tvMessage.getDataplaneId(), false)
+//                    );
+//                }
+//                else {
+//                    logger.warn("Flow Stats Replies of Data Plane Devices out of sync (duplicate reply from {})", tvMessage.getDataplaneId());
+//                }
+//                if (allAnswered(flowStatsCounter)) {
+//                    ourReply = factory.buildFlowStatsReply()
+//                            .setXid(switchReply.getXid())
+//                            .setFlags(switchReply.getFlags())
+//                            .setEntries(new ArrayList<>(flowStats))
+//                            .build();
+//                    flowStatsCounter.clear();
+//                    flowStats.clear();
+//                }
+//                break;
+
             case FLOW:
                 if (flowStatsCounter.add(tvMessage.getDataplaneId())) {
                     ArrayList<OFFlowStatsEntry> lastTableEntries = new ArrayList<>();
@@ -336,17 +379,23 @@ public class MultiSwitchApplication extends BaseApplication {
                     flowStats.addAll(
                             adaptFlowStatsEntries(firstTableEntries, tvMessage.getDataplaneId(), false)
                     );
+
+                    Set<OFStatsReplyFlags> ourFlags = new HashSet<>(switchReply.getFlags());
+                    if (!allAnswered(flowStatsCounter)) {
+                        ourFlags.add(OFStatsReplyFlags.REPLY_MORE);
+                    }
+                    else {
+                        flowStatsCounter.clear();
+                    }
+                    ourReply = factory.buildFlowStatsReply()
+                            .setXid(switchReply.getXid())
+                            .setFlags(ourFlags)
+                            .setEntries(new ArrayList<>(flowStats))
+                            .build();
+                    flowStats.clear();
                 }
                 else {
                     logger.warn("Flow Stats Replies of Data Plane Devices out of sync (duplicate reply from {})", tvMessage.getDataplaneId());
-                }
-                if (allAnswered(flowStatsCounter)) {
-                    ourReply = factory.buildFlowStatsReply()
-                            .setXid(switchReply.getXid())
-                            .setEntries(new ArrayList<>(flowStats))
-                            .build();
-                    flowStatsCounter.clear();
-                    flowStats.clear();
                 }
                 break;
 
@@ -744,7 +793,6 @@ public class MultiSwitchApplication extends BaseApplication {
     private void initializePipeline(TVMessage tvMessage,OFFactory factory){
         if (tvMessage.getDataplaneId() != TV.getConfig().biggestDataplaneId()
                 && tvMessage.getDataplaneId() != TV.getConfig().smallestDataplaneId()){
-            System.out.println("Initialize Pipeline: "+TV.getConfig().getAllSwitches().size()+"  |  "+tvMessage.getDataplaneId());
             ArrayList<OFInstruction> hiddenInsts = new ArrayList<>();
             ArrayList<OFAction> hiddenActions = new ArrayList<>();
             OFActionOutput action = factory.actions().buildOutput()
@@ -779,7 +827,6 @@ public class MultiSwitchApplication extends BaseApplication {
 
             OFFlowAdd flowMod = builder.build();
             TVMessage newMsg = new TVMessage(flowMod, tvMessage.getDataplaneId());
-            System.out.println("Ini Piepleine");
             getSuccessingDataPlaneConnector().allToDataPlane(newMsg);
         }
     }
