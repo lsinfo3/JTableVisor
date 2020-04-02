@@ -51,3 +51,7 @@ Alexej Grigorjew - <alexej.grigorjew@informatik.uni-wuerzburg.de>
 Stefan Geissler - <stefan.geissler@informatik.uni-wuerzburg.de>  
 Stefan Herrnleben - <stefan.herrnleben@informatik.uni-wuerzburg.de>  
 Thomas Zinner - <zinner@informatik.uni-wuerzburg.de>
+
+For referencing the TableVisor tool, please use the cite the following publication.
+
+**The Power of Composition: Abstracting a Multi-Device SDN Data Path Through a Single API, _S Geissler, S Herrnleben, R Bauer, A Grigorjew, T Zinner, M Jarschel_, IEEE Transactions on Network and Service Management, 2019**
